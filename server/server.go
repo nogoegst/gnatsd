@@ -662,9 +662,6 @@ func (s *Server) createClient(conn net.Conn) *client {
 
 	c.Debugf("Client connection created")
 
-	// Send our information.
-	c.sendInfo(info)
-
 	// Unlock to register
 	c.mu.Unlock()
 
@@ -749,6 +746,9 @@ func (s *Server) createClient(conn net.Conn) *client {
 		cs := c.nc.(*tls.Conn).ConnectionState()
 		c.Debugf("TLS version %s, cipher suite %s", tlsVersion(cs.Version), tlsCipher(cs.CipherSuite))
 	}
+
+	// Send our information.
+	c.sendInfo(info)
 
 	c.mu.Unlock()
 
