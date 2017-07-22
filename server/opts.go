@@ -64,7 +64,7 @@ type Options struct {
 	Routes         []*url.URL    `json:"-"`
 	RoutesStr      string        `json:"-"`
 	TLSTimeout     float64       `json:"tls_timeout"`
-	TLS            bool          `json:"-"`
+	Insecure       bool          `json:"-"`
 	TLSVerify      bool          `json:"-"`
 	TLSCert        string        `json:"-"`
 	TLSKey         string        `json:"-"`

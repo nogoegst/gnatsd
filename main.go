@@ -40,11 +40,11 @@ Authorization Options:
         --auth <token>               Authorization token required for connections
 
 TLS Options:
-        --tls                        Enable TLS, do not verify clients (default: false)
         --tlscert <file>             Server certificate file
         --tlskey <file>              Private key for server certificate
-        --tlsverify                  Enable TLS, verify client certificates
+        --tlsverify                  Enable TLS client certificate verification
         --tlscacert <file>           Client certificate CA for verification
+        --insecure                   Disable TLS, run in plaintext (default: false)
 
 Cluster Options:
         --routes <rurl-1, rurl-2>    Routes to solicit and connect
@@ -118,7 +118,7 @@ func main() {
 	flag.BoolVar(&opts.Cluster.NoAdvertise, "no_advertise", false, "Advertise known cluster IPs to clients.")
 	flag.IntVar(&opts.Cluster.ConnectRetries, "connect_retries", 0, "For implicit routes, number of connect retries")
 	flag.BoolVar(&showTLSHelp, "help_tls", false, "TLS help.")
-	flag.BoolVar(&opts.TLS, "tls", false, "Enable TLS.")
+	flag.BoolVar(&opts.Insecure, "insecure", false, "Disable TLS.")
 	flag.BoolVar(&opts.TLSVerify, "tlsverify", false, "Enable TLS with client verification.")
 	flag.StringVar(&opts.TLSCert, "tlscert", "", "Server certificate file.")
 	flag.StringVar(&opts.TLSKey, "tlskey", "", "Private key for server certificate.")
@@ -202,14 +202,14 @@ func main() {
 
 func configureTLS(opts *server.Options) {
 	// If no trigger flags, ignore the others
-	if !opts.TLS && !opts.TLSVerify {
+	if opts.Insecure {
 		return
 	}
 	if opts.TLSCert == "" {
-		server.PrintAndDie("TLS Server certificate must be present and valid.")
+		server.PrintAndDie("Either TLS Server certificate must be present and valid or --insecure option must be set")
 	}
 	if opts.TLSKey == "" {
-		server.PrintAndDie("TLS Server private key must be present and valid.")
+		server.PrintAndDie("Either TLS Server private key must be present and valid or --insecure option must be set")
 	}
 
 	tc := server.TLSConfigOpts{}
