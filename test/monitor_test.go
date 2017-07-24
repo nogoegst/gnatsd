@@ -17,7 +17,7 @@ import (
 	"time"
 
 	"github.com/nogoegst/gnatsd/server"
-	"github.com/nats-io/go-nats"
+	"github.com/nogoegst/go-nats"
 )
 
 const CLIENT_PORT = 11422
