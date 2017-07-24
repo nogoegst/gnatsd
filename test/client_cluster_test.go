@@ -25,7 +25,7 @@ func TestServerRestartReSliceIssue(t *testing.T) {
 
 	servers := []string{urlA, urlB}
 
-	opts := nats.DefaultOptions
+	opts := nats.DefaultOptions()
 	opts.Timeout = (5 * time.Second)
 	opts.ReconnectWait = (50 * time.Millisecond)
 	opts.MaxReconnect = 1000
@@ -45,6 +45,7 @@ func TestServerRestartReSliceIssue(t *testing.T) {
 	// Half connected to A and half to B..
 	for i := 0; i < numClients; i++ {
 		opts.Url = servers[i%2]
+		nats.Insecure()(&opts)
 		nc, err := opts.Connect()
 		if err != nil {
 			t.Fatalf("Failed to create connection: %v\n", err)
@@ -115,7 +116,7 @@ func TestServerRestartAndQueueSubs(t *testing.T) {
 	urlB := fmt.Sprintf("nats://%s:%d/", optsB.Host, optsB.Port)
 
 	// Client options
-	opts := nats.DefaultOptions
+	opts := nats.DefaultOptions()
 	opts.Timeout = (5 * time.Second)
 	opts.ReconnectWait = (50 * time.Millisecond)
 	opts.MaxReconnect = 1000
@@ -145,6 +146,7 @@ func TestServerRestartAndQueueSubs(t *testing.T) {
 
 	// Create two clients..
 	opts.Servers = []string{urlA}
+	nats.Insecure()(&opts)
 	nc1, err := opts.Connect()
 	if err != nil {
 		t.Fatalf("Failed to create connection for nc1: %v\n", err)
@@ -280,13 +282,13 @@ func TestRequestsAcrossRoutes(t *testing.T) {
 	urlA := fmt.Sprintf("nats://%s:%d/", optsA.Host, optsA.Port)
 	urlB := fmt.Sprintf("nats://%s:%d/", optsB.Host, optsB.Port)
 
-	nc1, err := nats.Connect(urlA)
+	nc1, err := nats.Connect(urlA, nats.Insecure())
 	if err != nil {
 		t.Fatalf("Failed to create connection for nc1: %v\n", err)
 	}
 	defer nc1.Close()
 
-	nc2, err := nats.Connect(urlB)
+	nc2, err := nats.Connect(urlB, nats.Insecure())
 	if err != nil {
 		t.Fatalf("Failed to create connection for nc2: %v\n", err)
 	}
@@ -321,13 +323,13 @@ func TestRequestsAcrossRoutesToQueues(t *testing.T) {
 	urlA := fmt.Sprintf("nats://%s:%d/", optsA.Host, optsA.Port)
 	urlB := fmt.Sprintf("nats://%s:%d/", optsB.Host, optsB.Port)
 
-	nc1, err := nats.Connect(urlA)
+	nc1, err := nats.Connect(urlA, nats.Insecure())
 	if err != nil {
 		t.Fatalf("Failed to create connection for nc1: %v\n", err)
 	}
 	defer nc1.Close()
 
-	nc2, err := nats.Connect(urlB)
+	nc2, err := nats.Connect(urlB, nats.Insecure())
 	if err != nil {
 		t.Fatalf("Failed to create connection for nc2: %v\n", err)
 	}

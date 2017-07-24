@@ -18,7 +18,7 @@ func TestMaxPayload(t *testing.T) {
 	defer srv.Shutdown()
 
 	endpoint := fmt.Sprintf("%s:%d", opts.Host, opts.Port)
-	nc, err := nats.Connect(fmt.Sprintf("nats://%s/", endpoint))
+	nc, err := nats.Connect(fmt.Sprintf("nats://%s/", endpoint), nats.Insecure())
 	if err != nil {
 		t.Fatalf("Could not connect to server: %v", err)
 	}

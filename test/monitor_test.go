@@ -476,7 +476,7 @@ func TestConnzWithAuth(t *testing.T) {
 
 	endpoint := fmt.Sprintf("%s:%d", opts.Host, opts.Port)
 	curl := fmt.Sprintf("nats://%s:%s@%s/", opts.Users[0].Username, opts.Users[0].Password, endpoint)
-	nc, err := nats.Connect(curl)
+	nc, err := nats.Connect(curl, nats.Insecure())
 	if err != nil {
 		t.Fatalf("Got an error on Connect: %+v\n", err)
 	}

@@ -93,9 +93,8 @@ func TestTLSClientCertificate(t *testing.T) {
 		MinVersion:   tls.VersionTLS12,
 	}
 
-	copts := nats.DefaultOptions
+	copts := nats.DefaultOptions()
 	copts.Url = nurl
-	copts.Secure = true
 	copts.TLSConfig = config
 
 	nc, err := copts.Connect()
@@ -141,8 +140,9 @@ func TestTLSConnectionTimeout(t *testing.T) {
 	// Read deadlines
 	conn.SetReadDeadline(time.Now().Add(2 * time.Second))
 
-	// Read the INFO string.
 	br := bufio.NewReader(conn)
+	/*
+	// Read the INFO string.
 	info, err := br.ReadString('\n')
 	if err != nil {
 		t.Fatalf("Failed to read INFO - %v", err)
@@ -150,6 +150,7 @@ func TestTLSConnectionTimeout(t *testing.T) {
 	if !strings.HasPrefix(info, "INFO ") {
 		t.Fatalf("INFO response incorrect: %s\n", info)
 	}
+	*/
 	wait := time.Duration(opts.TLSTimeout * float64(time.Second))
 	time.Sleep(wait)
 	// Read deadlines
@@ -158,6 +159,7 @@ func TestTLSConnectionTimeout(t *testing.T) {
 	if err == nil && !strings.Contains(tlsErr, "-ERR 'Secure Connection - TLS Required") {
 		t.Fatalf("TLS Timeout response incorrect: %q\n", tlsErr)
 	}
+
 }
 
 // Ensure there is no race between authorization timeout and TLS handshake.

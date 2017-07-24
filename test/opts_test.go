@@ -2,7 +2,10 @@
 
 package test
 
-import "testing"
+import (
+	"testing"
+	"crypto/tls"
+)
 
 func TestServerConfig(t *testing.T) {
 	srv, opts := RunServerWithConfig("./configs/override.conf")
@@ -25,7 +28,12 @@ func TestTLSConfig(t *testing.T) {
 	c := createClientConn(t, opts.Host, opts.Port)
 	defer c.Close()
 
-	sinfo := checkInfoMsg(t, c)
+	tlsc := tls.Client(c, &tls.Config{InsecureSkipVerify: true})
+	err := tlsc.Handshake()
+	if err != nil {
+		t.Fatal(err)
+	}
+	sinfo := checkInfoMsg(t, tlsc)
 	if !sinfo.TLSRequired {
 		t.Fatal("Expected TLSRequired to be true when configured")
 	}

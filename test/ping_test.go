@@ -47,10 +47,12 @@ func TestPingSentToTLSConnection(t *testing.T) {
 	c := createClientConn(t, "localhost", PING_TEST_PORT)
 	defer c.Close()
 
-	checkInfoMsg(t, c)
 	c = tls.Client(c, &tls.Config{InsecureSkipVerify: true})
 	tlsConn := c.(*tls.Conn)
-	tlsConn.Handshake()
+	if err := tlsConn.Handshake(); err != nil {
+		t.Fatal(err)
+	}
+	checkInfoMsg(t, c)
 
 	cs := fmt.Sprintf("CONNECT {\"verbose\":%v,\"pedantic\":%v,\"ssl_required\":%v}\r\n", false, false, true)
 	sendProto(t, c, cs)

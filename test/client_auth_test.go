@@ -28,7 +28,7 @@ func TestMultipleUserAuth(t *testing.T) {
 		opts.Users[0].Password,
 		opts.Host, opts.Port)
 
-	nc, err := nats.Connect(url)
+	nc, err := nats.Connect(url, nats.Insecure())
 	if err != nil {
 		t.Fatalf("Expected a successful connect, got %v\n", err)
 	}
@@ -44,7 +44,7 @@ func TestMultipleUserAuth(t *testing.T) {
 		opts.Users[1].Password,
 		opts.Host, opts.Port)
 
-	nc, err = nats.Connect(url)
+	nc, err = nats.Connect(url, nats.Insecure())
 	if err != nil {
 		t.Fatalf("Expected a successful connect, got %v\n", err)
 	}
@@ -70,7 +70,7 @@ func TestTokenInConfig(t *testing.T) {
 	defer s.Shutdown()
 
 	url := fmt.Sprintf("nats://test@%s:%d/", opts.Host, opts.Port)
-	nc, err := nats.Connect(url)
+	nc, err := nats.Connect(url, nats.Insecure())
 	if err != nil {
 		t.Fatalf("Expected a successful connect, got %v\n", err)
 	}
