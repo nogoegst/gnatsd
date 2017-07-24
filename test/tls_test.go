@@ -14,7 +14,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nats-io/gnatsd/server"
+	"github.com/nogoegst/gnatsd/server"
 	"github.com/nats-io/go-nats"
 )
 
@@ -142,14 +142,14 @@ func TestTLSConnectionTimeout(t *testing.T) {
 
 	br := bufio.NewReader(conn)
 	/*
-	// Read the INFO string.
-	info, err := br.ReadString('\n')
-	if err != nil {
-		t.Fatalf("Failed to read INFO - %v", err)
-	}
-	if !strings.HasPrefix(info, "INFO ") {
-		t.Fatalf("INFO response incorrect: %s\n", info)
-	}
+		// Read the INFO string.
+		info, err := br.ReadString('\n')
+		if err != nil {
+			t.Fatalf("Failed to read INFO - %v", err)
+		}
+		if !strings.HasPrefix(info, "INFO ") {
+			t.Fatalf("INFO response incorrect: %s\n", info)
+		}
 	*/
 	wait := time.Duration(opts.TLSTimeout * float64(time.Second))
 	time.Sleep(wait)

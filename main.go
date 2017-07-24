@@ -10,7 +10,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/nats-io/gnatsd/server"
+	"github.com/nogoegst/gnatsd/server"
 )
 
 var usageStr = `

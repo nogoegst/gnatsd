@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/nats-io/gnatsd/logger"
+	"github.com/nogoegst/gnatsd/logger"
 )
 
 func TestSignalToReOpenLogFile(t *testing.T) {
